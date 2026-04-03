@@ -2,7 +2,7 @@ services:
   - type: web
     name: binance-p2p-dashboard
     runtime: python
-    plan: starter
+    plan: free
     rootDir: .
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
@@ -31,7 +31,7 @@ services:
   - type: cron
     name: binance-p2p-sync
     runtime: python
-    plan: starter
+    plan: free
     rootDir: .
     schedule: "*/5 * * * *"
     buildCommand: pip install -r requirements.txt
