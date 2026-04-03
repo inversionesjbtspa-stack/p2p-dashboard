@@ -45,5 +45,10 @@ class BinanceClient:
 
         with httpx.Client(timeout=30.0) as client:
             response = client.get(f"{self.base_url}/sapi/v1/c2c/orderMatch/listUserOrderHistory", params=params, headers=headers)
+        try:
             response.raise_for_status()
-            return response.json()
+        except Exception as e:
+            print("Binance error:", e)
+            return {"data": []}
+
+       return response.json()
