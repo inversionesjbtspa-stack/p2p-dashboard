@@ -31,7 +31,7 @@ services:
   - type: cron
     name: binance-p2p-sync
     runtime: python
-    plan: free
+    plan: starter
     rootDir: .
     schedule: "*/5 * * * *"
     buildCommand: pip install -r requirements.txt
