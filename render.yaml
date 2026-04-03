@@ -56,6 +56,6 @@ services:
 
 databases:
   - name: binance-p2p-db
-    plan: starter
+    plan: free
     databaseName: p2pdb
     user: p2puser
