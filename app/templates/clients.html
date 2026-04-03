@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Clientes</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Cliente</th>
+      <th>RUT</th>
+      <th>Email</th>
+      <th>Teléfono</th>
+      <th>Estado ficha</th>
+      <th>Tx 6M</th>
+      <th>Monto 6M</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <td>{{ client.full_name or client.binance_counterparty_key or "-" }}</td>
+      <td>{{ client.rut or "-" }}</td>
+      <td>{{ client.email or "-" }}</td>
+      <td>{{ client.phone or "-" }}</td>
+      <td>{{ client.data_quality_status or "pending" }}</td>
+      <td>{{ client.metrics.tx_count_6m if client.metrics else 0 }}</td>
+      <td>{{ client.metrics.total_amount_6m if client.metrics else 0 }}</td>
+      <td><a class="button-link" href="/clients/{{ client.id }}">Editar</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

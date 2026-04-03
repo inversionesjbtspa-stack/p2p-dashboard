@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Binance P2P Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Binance P2P Dashboard</div>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/orders">Órdenes</a>
+      <a href="/clients">Clientes</a>
+      <a href="/export.xlsx">Exportar Excel</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

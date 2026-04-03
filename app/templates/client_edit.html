@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Editar cliente</h1>
+<form method="post" action="/clients/{{ client.id }}" class="form-grid">
+  <label>Nombre completo
+    <input type="text" name="full_name" value="{{ client.full_name or '' }}">
+  </label>
+  <label>RUT
+    <input type="text" name="rut" value="{{ client.rut or '' }}">
+  </label>
+  <label>Correo
+    <input type="text" name="email" value="{{ client.email or '' }}">
+  </label>
+  <label>Teléfono
+    <input type="text" name="phone" value="{{ client.phone or '' }}">
+  </label>
+  <label>Dirección
+    <input type="text" name="address" value="{{ client.address or '' }}">
+  </label>
+  <label>Giro
+    <input type="text" name="business_line" value="{{ client.business_line or '' }}">
+  </label>
+  <label>Segundo alias
+    <input type="text" name="second_alias" value="{{ client.second_alias or '' }}">
+  </label>
+  <label class="full">Notas
+    <textarea name="notes" rows="5">{{ client.notes or '' }}</textarea>
+  </label>
+  <div class="full stats">
+    <strong>Estado ficha:</strong> {{ client.data_quality_status or 'pending' }}<br>
+    <strong>Historial 6 meses:</strong>
+    {{ client.metrics.tx_count_6m if client.metrics else 0 }} transacciones |
+    monto {{ client.metrics.total_amount_6m if client.metrics else 0 }} |
+    última {{ client.metrics.last_tx_6m if client.metrics else "-" }}
+  </div>
+  <div class="full">
+    <button type="submit">Guardar cliente</button>
+  </div>
+</form>
+{% endblock %}

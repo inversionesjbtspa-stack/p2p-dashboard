@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Órdenes</h1>
+<p class="muted">Pega el texto del mensaje del cliente y el sistema intentará extraer mail, teléfono, RUT, nombre y datos de facturación. Si OpenAI está configurado, se usará extracción inteligente; si no, se usarán reglas locales.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Orden</th>
+      <th>Fecha</th>
+      <th>Comprador</th>
+      <th>Par</th>
+      <th>Monto</th>
+      <th>Estado</th>
+      <th>Extracción</th>
+      <th>Mensaje / parser</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.order_number }}</td>
+      <td>{{ order.order_created_at or "" }}</td>
+      <td>
+        <div>{{ order.client.full_name if order.client and order.client.full_name else order.counterparty_nickname }}</div>
+        <div class="muted">Email: {{ order.extracted_email or "-" }} | Tel: {{ order.extracted_phone or "-" }}</div>
+        <div class="muted">RUT: {{ order.extracted_rut or "-" }} | Fuente: {{ order.extraction_source or "-" }}</div>
+      </td>
+      <td>{{ order.fiat or "" }}</td>
+      <td>{{ order.total_price or "" }}</td>
+      <td>{{ order.order_status or "" }}</td>
+      <td>
+        <div class="muted">Confianza: {{ order.ai_confidence or "-" }}</div>
+        <div class="muted">Resumen: {{ order.ai_summary or "-" }}</div>
+        <form method="post" action="/orders/{{ order.id }}/analyze" class="inline-form">
+          <button type="submit">Reanalizar</button>
+        </form>
+      </td>
+      <td>
+        <form method="post" action="/orders/{{ order.id }}/message">
+          <textarea name="message" rows="5" placeholder="Pega aquí el texto del chat o mensaje del cliente">{{ order.raw_message or "" }}</textarea>
+          <button type="submit">Guardar y detectar</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

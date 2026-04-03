@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Resumen operativo</h1>
+<div class="cards">
+  <div class="card"><span class="label">Órdenes</span><strong>{{ counts.orders }}</strong></div>
+  <div class="card"><span class="label">Clientes</span><strong>{{ counts.clients }}</strong></div>
+  <div class="card"><span class="label">Clientes con datos incompletos</span><strong>{{ counts.clients_missing_tax }}</strong></div>
+  <div class="card"><span class="label">Clientes listos</span><strong>{{ counts.clients_ready }}</strong></div>
+</div>
+
+<section class="panel">
+  <div class="panel-header">
+    <h2>Sincronización</h2>
+    <form method="post" action="/sync/run">
+      <button type="submit">Ejecutar sincronización ahora</button>
+    </form>
+  </div>
+  <p>
+    {% if sync %}
+      Última ejecución: {{ sync.started_at }} | Estado: {{ sync.status }} | Detalle: {{ sync.detail or "-" }}
+    {% else %}
+      Aún no existe una sincronización registrada.
+    {% endif %}
+  </p>
+  <p class="muted">OpenAI: {% if openai_enabled %}activo{% else %}no configurado, el sistema usará extracción local{% endif %}</p>
+</section>
+
+<section class="panel">
+  <h2>Últimas órdenes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Orden</th>
+        <th>Fecha</th>
+        <th>Comprador</th>
+        <th>Par</th>
+        <th>Monto</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.order_created_at or "" }}</td>
+        <td>{{ order.client.full_name if order.client and order.client.full_name else order.counterparty_nickname }}</td>
+        <td>{{ order.fiat or "" }}</td>
+        <td>{{ order.total_price or "" }}</td>
+        <td>{{ order.extracted_email or order.client.email if order.client else "" }}</td>
+        <td>{{ order.extracted_phone or order.client.phone if order.client else "" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
