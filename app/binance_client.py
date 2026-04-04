@@ -67,3 +67,4 @@ class BinanceClient:
             return {"data": []}
 
         return response.json()
+ 
