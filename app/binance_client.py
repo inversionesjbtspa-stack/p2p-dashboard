@@ -25,14 +25,14 @@ class BinanceClient:
         signature = hmac.new(self.secret_key.encode(), query_string.encode(), hashlib.sha256).hexdigest()
         return signature
 
-    def get_c2c_history(
-    self,
-    *,
-    trade_type: str,
-    start_timestamp: int | None = None,
-    end_timestamp: int | None = None,
-    page: int = 1,
-    rows: int = 100,
+  def get_c2c_history(
+      self,
+      *,
+      trade_type: str,
+      start_timestamp: int | None = None,
+      end_timestamp: int | None = None,
+      page: int = 1,
+      rows: int = 100,
 ) -> dict[str, Any]:
     if not self.is_configured():
         raise RuntimeError("Binance API keys are not configured.")
@@ -67,4 +67,3 @@ class BinanceClient:
             return {"data": []}
 
         return response.json()
- 
